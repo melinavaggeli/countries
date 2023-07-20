@@ -1,15 +1,16 @@
-<div class="country-card">
+<div class="card-container">
   <img [src]="country.flag" alt="flag" />
   <div>
-    <h3>{{ country.name }}</h3>
-    <div class="flex-row">
-      Capital:
-      <p>{{ country.capital }}</p>
-    </div>
-
-    <div class="flex-row">
-      Population:
-      <p>{{ country.population }}</p>
+    <h1>{{ country.name }}</h1>
+    <hr />
+    <div>
+      <p>
+        Capital: <strong> {{ country.capital }}</strong>
+      </p>
+      <p>
+        Population: <strong>{{ country.population }}</strong>
+      </p>
     </div>
   </div>
+  <a mat-raised-button href="/">Go to homepage</a>
 </div>
