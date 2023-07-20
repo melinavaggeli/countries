@@ -1,7 +1,9 @@
+<h2>SEARCH FOR COUNTRIES</h2>
 <form>
   <mat-form-field floatLabel="never">
     <mat-icon class="search-icon" matPrefix>search</mat-icon>
     <input
+      class="input"
       matInput
       [formControl]="autocompleteValue"
       placeholder="Search Country"
@@ -13,6 +15,7 @@
       <mat-option
         *ngFor="let option of countries | async"
         [value]="option.name.common"
+        class="option"
         (click)="onSelectCountry(option.name.common)"
       >
         {{ option.name.common }}

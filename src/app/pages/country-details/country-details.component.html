@@ -1,7 +1,11 @@
-<ng-container *ngIf="country">
-  <app-country-card [country]="country"></app-country-card>
-</ng-container>
+<a mat-raised-button href="/">Go to homepage</a>
 
-<ng-container *ngIf="!country">
-  <p>Loading country details...</p>
-</ng-container>
+<div class="country-details">
+  <ng-container *ngIf="country">
+    <app-country-card [country]="country"></app-country-card>
+  </ng-container>
+
+  <ng-container *ngIf="!country">
+    <p>Loading country details...</p>
+  </ng-container>
+</div>
