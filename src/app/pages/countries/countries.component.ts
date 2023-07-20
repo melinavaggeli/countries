@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   BehaviorSubject,
   debounceTime,
@@ -17,22 +18,25 @@ import { CountryService } from 'src/app/services/country.service';
   styleUrls: ['./countries.component.scss'],
 })
 export class CountriesComponent implements OnInit, OnDestroy {
-  myControl = new FormControl('');
   countries = new BehaviorSubject([{ name: { common: '' } }]);
   autocompleteValue = new FormControl('');
-  error: boolean = false;
-  loading: boolean = false;
-  private subscription!: Subscription;
+  noResults: boolean = false;
+  isLoading: boolean = false;
+  private _subscription!: Subscription;
 
-  constructor(private countrieService: CountryService) {}
+  constructor(
+    private countrieService: CountryService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.subscription = this.autocompleteValue.valueChanges
+    this._subscription = this.autocompleteValue.valueChanges
       .pipe(
         startWith(''),
         debounceTime(800),
         switchMap((val) => {
-          this.error = false;
+          this.noResults = false;
           return !!val?.trim() ? this.onAutocomplete(val) : of([]);
         }),
         map((val) => {
@@ -43,16 +47,16 @@ export class CountriesComponent implements OnInit, OnDestroy {
   }
 
   onAutocomplete(val: string) {
-    this.loading = true;
-    this.error = false;
+    this.isLoading = true;
     this.countrieService.autocomplete(val).subscribe(
       (v: any) => {
         this.countries.next(v);
-        this.loading = false;
-        this.error = this.countries.getValue().length == 0;
+        this.isLoading = false;
+        this.noResults = this.countries.getValue().length == 0;
       },
       (err) => {
-        this.loading = false;
+        this.noResults = true;
+        this.isLoading = false;
       }
     );
 
@@ -60,10 +64,10 @@ export class CountriesComponent implements OnInit, OnDestroy {
   }
 
   onSelectCountry(countryName: string) {
-    //TODO: navigate to country detail
+    this.router.navigate([countryName], { relativeTo: this.route });
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this._subscription.unsubscribe();
   }
 }

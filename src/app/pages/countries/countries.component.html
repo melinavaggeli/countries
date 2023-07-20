@@ -1,12 +1,15 @@
-<form class="example-form">
-  <mat-form-field class="example-full-width">
+<form>
+  <mat-form-field floatLabel="never">
+    <mat-icon class="search-icon" matPrefix>search</mat-icon>
     <input
       matInput
       [formControl]="autocompleteValue"
       placeholder="Search Country"
       [matAutocomplete]="auto"
     />
+    <mat-spinner *ngIf="isLoading" matSuffix [diameter]="20"></mat-spinner>
     <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngIf="noResults" disabled> No results... </mat-option>
       <mat-option
         *ngFor="let option of countries | async"
         [value]="option.name.common"

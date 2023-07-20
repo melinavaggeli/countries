@@ -6,6 +6,8 @@ import { CountriesComponent } from './countries.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [CountriesComponent],
@@ -16,6 +18,8 @@ import { MatInputModule } from '@angular/material/input';
     MatInputModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class CountriesModule {}
