@@ -10,7 +10,7 @@ import {
   switchMap,
   Subscription,
 } from 'rxjs';
-import { CountryService } from 'src/app/services/country.service';
+import { CountryService } from 'src/app//services/country.service';
 
 @Component({
   selector: 'app-countries',

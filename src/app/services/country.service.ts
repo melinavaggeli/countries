@@ -5,13 +5,17 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class CountryService {
-  autocompletUrl: string;
+  apiUrl: string;
 
   constructor(private http: HttpClient) {
-    this.autocompletUrl = 'https://restcountries.com/v3.1/name';
+    this.apiUrl = 'https://restcountries.com/v3.1/name';
   }
 
   autocomplete(name: string) {
-    return this.http.get(`${this.autocompletUrl}/${name}`);
+    return this.http.get(`${this.apiUrl}/${name}`);
+  }
+
+  getCountry(name: string) {
+    return this.http.get(`${this.apiUrl}/${name}?fullText=true`);
   }
 }
