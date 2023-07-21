@@ -8,6 +8,7 @@ import { Country } from 'src/app/models/country';
 })
 export class CountryCardComponent implements OnInit {
   @Input() country!: Country;
+  @Input() isLoading: boolean = true;
 
   constructor() {}
 

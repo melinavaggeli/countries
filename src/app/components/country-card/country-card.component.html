@@ -1,16 +1,19 @@
 <div class="card-container">
-  <img [src]="country.flag" alt="flag" />
-  <div>
-    <h1>{{ country.name }}</h1>
-    <hr />
+  <ng-container *ngIf="!isLoading">
+    <img [src]="country.flag" alt="flag" />
     <div>
-      <p>
-        Capital: <strong> {{ country.capital }}</strong>
-      </p>
-      <p>
-        Population: <strong>{{ country.population }}</strong>
-      </p>
+      <h1>{{ country.name }}</h1>
+      <hr />
+      <div>
+        <p>
+          Capital: <strong> {{ country.capital }}</strong>
+        </p>
+        <p>
+          Population: <strong>{{ country.population }}</strong>
+        </p>
+      </div>
     </div>
-  </div>
-  <a mat-raised-button href="/">Go to homepage</a>
+    <a mat-raised-button href="/">Go to homepage</a>
+  </ng-container>
+  <ng-container *ngIf="isLoading"> Loading... </ng-container>
 </div>

@@ -17,8 +17,9 @@
         [value]="option.name.common"
         class="option"
         (click)="onSelectCountry(option.name.common)"
+        (onSelectionChange)="onSelectCountry(option.name.common)"
       >
-        {{ option.name.common }}
+        <img class="flag" [src]="option.flags.svg" /> {{ option.name.common }}
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>

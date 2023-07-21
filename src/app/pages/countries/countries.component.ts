@@ -18,7 +18,9 @@ import { CountryService } from 'src/app//services/country.service';
   styleUrls: ['./countries.component.scss'],
 })
 export class CountriesComponent implements OnInit, OnDestroy {
-  countries = new BehaviorSubject([{ name: { common: '' } }]);
+  countries = new BehaviorSubject([
+    { name: { common: '' }, flags: { svg: '' } },
+  ]);
   autocompleteValue = new FormControl('');
   noResults: boolean = false;
   isLoading: boolean = false;
@@ -59,7 +61,6 @@ export class CountriesComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       }
     );
-
     return this.countries.getValue();
   }
 
