@@ -14,6 +14,10 @@ const routes: Routes = [
     redirectTo: 'countries',
     pathMatch: 'full',
   },
+  {
+    path: '**',
+    redirectTo: 'countries',
+  },
 ];
 
 @NgModule({

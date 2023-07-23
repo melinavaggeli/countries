@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ApiResponse } from 'src/app/models/apiResponse';
 import { Country } from 'src/app/models/country';
 import { CountryService } from 'src/app/services/country.service';
 
@@ -26,7 +27,7 @@ export class CountryDetailsComponent implements OnInit {
 
     //Get the country details
     this.countryService.getCountry(countryName).subscribe(
-      (country: any) => {
+      (country: ApiResponse[]) => {
         this.isLoading = false;
         this.setCountry(country[0]);
       },
@@ -37,11 +38,11 @@ export class CountryDetailsComponent implements OnInit {
   }
 
   //Set the country details
-  private setCountry(country: any): void {
+  private setCountry(country: ApiResponse): void {
     this.country = {
       name: country.name.common,
       capital: country.capital,
-      flag: country.flags.png,
+      flag: country.flags.svg,
       population: country.population,
     };
   }

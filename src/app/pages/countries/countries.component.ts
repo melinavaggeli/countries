@@ -9,8 +9,12 @@ import {
   startWith,
   switchMap,
   Subscription,
+  takeUntil,
+  catchError,
+  Subject,
 } from 'rxjs';
 import { CountryService } from 'src/app//services/country.service';
+import { ApiResponse } from 'src/app/models/apiResponse';
 
 @Component({
   selector: 'app-countries',
@@ -18,13 +22,15 @@ import { CountryService } from 'src/app//services/country.service';
   styleUrls: ['./countries.component.scss'],
 })
 export class CountriesComponent implements OnInit, OnDestroy {
-  countries = new BehaviorSubject([
-    { name: { common: '' }, flags: { svg: '' } },
+  countries: BehaviorSubject<ApiResponse[]> = new BehaviorSubject([
+    { name: { common: '' }, flags: { svg: '' }, population: 0, capital: '' },
   ]);
+
   autocompleteValue = new FormControl('');
   noResults: boolean = false;
   isLoading: boolean = false;
   private _subscription!: Subscription;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private countrieService: CountryService,
@@ -36,9 +42,11 @@ export class CountriesComponent implements OnInit, OnDestroy {
     this._subscription = this.autocompleteValue.valueChanges
       .pipe(
         startWith(''),
+        // Wait 800ms after each keystroke before considering the term
         debounceTime(800),
         switchMap((val) => {
           this.noResults = false;
+          // If the value is an empty string don't start making HTTP call
           return !!val?.trim() ? this.onAutocomplete(val) : of([]);
         }),
         map((val) => {
@@ -50,17 +58,24 @@ export class CountriesComponent implements OnInit, OnDestroy {
 
   onAutocomplete(val: string) {
     this.isLoading = true;
-    this.countrieService.autocomplete(val).subscribe(
-      (v: any) => {
+    // Emit a value to cancel any ongoing request
+    this.destroy$.next();
+
+    this.countrieService
+      .autocomplete(val)
+      .pipe(
+        takeUntil(this.destroy$), // Cancel the previous request when a new one starts
+        catchError((error) => {
+          this.isLoading = false;
+          this.noResults = true;
+          return of([]);
+        })
+      )
+      .subscribe((v: ApiResponse[]) => {
         this.countries.next(v);
         this.isLoading = false;
         this.noResults = this.countries.getValue().length == 0;
-      },
-      (err) => {
-        this.noResults = true;
-        this.isLoading = false;
-      }
-    );
+      });
     return this.countries.getValue();
   }
 
@@ -70,5 +85,8 @@ export class CountriesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this._subscription.unsubscribe();
+
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

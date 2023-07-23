@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { ApiResponse } from '../models/apiResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -11,11 +13,11 @@ export class CountryService {
     this.apiUrl = 'https://restcountries.com/v3.1/name';
   }
 
-  autocomplete(name: string) {
-    return this.http.get(`${this.apiUrl}/${name}`);
+  autocomplete(name: string): Observable<ApiResponse[]> {
+    return this.http.get<ApiResponse[]>(`${this.apiUrl}/${name}`);
   }
 
-  getCountry(name: string) {
-    return this.http.get(`${this.apiUrl}/${name}?fullText=true`);
+  getCountry(name: string): Observable<ApiResponse[]> {
+    return this.http.get<ApiResponse[]>(`${this.apiUrl}/${name}?fullText=true`);
   }
 }
