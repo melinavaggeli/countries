@@ -48,9 +48,6 @@ export class CountriesComponent implements OnInit, OnDestroy {
           this.noResults = false;
           // If the value is an empty string don't start making HTTP call
           return !!val?.trim() ? this.onAutocomplete(val) : of([]);
-        }),
-        map((val) => {
-          return val;
         })
       )
       .subscribe((err) => this.countries.next([]));
